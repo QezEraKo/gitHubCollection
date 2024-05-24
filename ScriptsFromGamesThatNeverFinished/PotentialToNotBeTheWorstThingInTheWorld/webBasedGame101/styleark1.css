@@ -1,0 +1,160 @@
+body {
+    font-family: sans-serif; 
+   
+}
+
+/* ///// PAGE SKELETON START /////*/
+
+.mainDiv{ /* Main div, contains all 3 divs and makes them appear next to eachother */
+    display: flex;
+    flex-direction: row;
+    height: 400%;
+    width: 100%;
+    margin: 0 auto;
+}
+.leftDiv{  /* Left div, Occupying 30% of left side of page*/
+    width: 33%;
+    background: #369;
+}
+
+.upperLeftDiv{
+    justify-content: center;
+    display: inline-block;
+    width: 100%;
+    
+}
+
+.middleLeftDiv
+{
+    justify-content: center;
+    display: inline-block;
+    width: 100%;
+    
+}
+
+.lowerLeftDiv
+{
+    justify-content: center;
+    display: inline-block;
+    overflow:scroll; /* make restrictions on how big can be*/
+
+    box-sizing: border-box; /*make own "makebox" class for this one*/
+    width: 400px;
+    height: 200px;
+    border: 5px solid;
+    margin: 10px;
+    border-radius: 20px;
+    padding: 20px;
+
+
+}
+
+.middleDiv{ /* Middle div, Occupying 30% of middle of page*/
+    width: 33%;
+    background-color: rgb(72, 73, 98);
+}
+
+.rightDiv{ /* Right div, Occupying 30% of right side of page*/
+    width: 33%;
+    background: rgb(56, 57, 77);
+}
+
+.upperMiddleDiv{ /*Part where Game picture/game window is */
+    height: 30%
+}
+
+.middleMiddleDiv{ /*Either for padding or for text between pic and buttons */ 
+height: 10%;
+width: 100%;
+}
+
+.lowerMiddleDiv{ /* For Buttons */
+    height: 35%;
+}
+
+/* ///// PAGE SKELETON END /////*/
+
+h1{
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-fill-color: white;;
+    -webkit-text-stroke-color: black;
+}
+
+h2{
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-color: black;
+    
+}
+
+
+.displayImage{ 
+    display: block;
+    height: 70%;
+    width: auto;
+    margin: auto;
+}
+
+.heroHelmet{
+    width: 20%;
+}
+
+
+.choiseButtonDiv{
+ height:100px;
+
+}
+  
+/* ///// BUTTONS START /////*/
+
+button {
+    height: 100px;
+    border-radius: 10px;
+    width: 45%;
+    justify-content: space-evenly; /* changes layout to be sorted evenly */
+    background-color: rgb(215, 170, 7); 
+    color: black; 
+    border: 2px solid rgb(73, 58, 3);
+    text-align: center;
+    display: inline-block; /* Makes Blocks that are sorted in a row */
+    font-size: 16px;
+    margin: 5px 5px; /*Top/Bottom right/left */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(151, 119, 5);
+    color: white;
+}
+
+/* ///// BUTTONS END /////*/
+/* ///// CREATOR BOXES START /////*/
+.makeItBox{
+    box-sizing: border-box;
+    width: 200px;
+    height: max-content;
+    border: 5px solid;
+    margin: 10px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+#creatorEskil{
+    background-color: rgb(211, 159, 117);
+    /* Just for us to know "whos" box we're working in */
+}
+
+#creatorEmil{
+    background-color: rgb(211, 159, 117);
+}
+
+#creatorBenjamin{
+    background-color: rgb(211, 159, 117);
+}
+
+/* ///// CREATOR BOXES ENDS /////*/
+ 
+    
+
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduksjon til CSS</title>
+    <link rel="stylesheet" href="/styleark1.css"/>
+    <script type="text/javascript" src="/JavaScriptFiles/JSfile.JS" defer></script>
+    <!-- Her kan du skrive inn linken til ditt CSS - Dokument-->
+</head>
+<body  > 
+<div class="mainDiv">
+    <div class="leftDiv">
+        <p>
+            <center>
+                STATS
+            </center>
+        </p>
+        <div class="upperLeftDiv makeItBox">
+            <h2>Enemy stats</h2><br />
+            <p id="enemyNameDisplay"> Name: </p>
+            <p id="enemyHealthDisplay"> Enemy Health: </p>
+            <p id="enemyDamageDisplay"> Enemy Damage: </p>
+            <p id="enemyLevelDisplay"> Enemy Level: </p>
+            <p id="enemyPotionDisplay"> Enemy Potions: </p>
+        </div>
+        <div class="middleLeftDiv makeItBox" >
+            <h2>Hero Stats</h2>
+            <p id="heroHealthDisplay"> Hero Health: </p>
+            <p id="heroDamageDisplay"> Hero Damage: </p>
+            <p id="heroLevelDisplay"> Hero Level: </p>
+            <p id="heroExperienceDisplay"> Hero Experience: </p>
+            <p id="heroPotionDisplay"> Hero Potions: </p>
+            <p id="heroArrowDisplay"> Hero Arrows: </p>
+            <p id="heroGoldDisplay"> Hero Gold:</p>
+        </div>
+        <div class="lowerLeftDiv">
+            <h2>CombatText</h2>
+            <p id="chatLog"></p>
+        </div>
+    </div>
+    <div class="middleDiv" >
+        <div class="upperMiddleDiv">
+            <h1>Goblin Slayer 1.1</h1>
+            <img Id="MainPictureID" class="displayImage" src="./assets/green_forest_1.jpg" alt="Et fint bilde av en datamaskin" >
+        </div>
+        <div class="lowerMiddleDiv">
+            <div>
+                <h2>Choose Wisely</h2>
+            </div>
+            <div id="choiseButtonDiv">
+                <button onclick="Button1()"   class="button" id="button1">Attack</button>
+                <button onclick="Button2()"   class="button" id="button2">Retreat</button>
+                <button onclick="Button3()"   class="button" id="button3">Option</button>
+                <button onclick="Button4()"   class="button" id="button4">4.th option</button>
+            </div>
+        </div>
+        
+    </div>
+    <div class="rightDiv">
+        <div ID="creatorEskil" class="makeItBox">
+        <h1><center>Eskil</center></h1>
+        <p><center>Lenker til Tidligere spill</center></p>
+        <a 
+            href="/OtherLinks/EskilFolder/game_1-0.html" target="_blank"> 
+            <p>Goblin Slayer 1.0</p> 
+        </a>
+        <a 
+            href="https://www.imdb.com/title/tt0167261/" target="_blank"> 
+            <p>Goblin Slayer 1.1</p> 
+        </a>
+        </div>
+        <div id="creatorEmil" class="makeItBox">
+            <h1><center>Emil</center></h1>
+        </div>
+        <div id="creatorBenjamin" class="makeItBox">
+            <h1><center>Benjamin</center></h1>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variabler</title>
+    <!-- 
+        Kommentering: enlinje, flerlinje
+        Variabler
+        - deklarasjon        
+        - String-variabler
+        - regler for variabelnavn
+        window.alert(), console.log()        
+        "use strict";, debug
+     -->
+</head>
+<body>    
+
+    <script>// Beskjed til nettleser om at her kommer JS
+
+        /*Flerlinjekommentar
+            ***
+                Variabler
+            ***
+        */
+
+        // 3 måter å deklarere en variabel på, og en fjerde som er fy-fy
+        //deklarere = opprette = lage
+        //initiere / tilordne = putte verdi i variabel
+
+        //Baldur's Gate 3
+        var daggers;
+        let healthPotions ; //hva er forskjellen mellom var og let?
+        var goldCoins;
+        let monster1 = "KillahCamilla"; //Navn på første monster man møter på
+        var userHealth;
+        var currentHealth;
+        const hero1 = "Adrian"; //Må initsialiserers med en gang og kan ikke endres
+        let monster1Alive = true;
+        var usedArrows;
+        var answer;
+        var bloodArrows = 0;
+        let userAlive = true;
+
+        daggers = 0; //datatype: Number
+        arrows = 7;
+        goldCoins = 5;
+        currentHealth = 100;
+        arrowDamage = 20;
+        userHealth = 100;
+       newBattle();
+ 
+
+        function BattleResult()
+        {
+            if (userAlive == true)
+            {
+
+                
+                if(currentHealth <= 0)
+                {
+                    alert("Vermin is Dead." + "You have " + arrows + "arrows left");
+                    monster1Alive = false;
+                }
+                else if(currentHealth >= 0)
+                    {
+                    userHealth -= 20;
+                    alert("you take 20 dmg, and have " + userHealth + "HP left");
+                    if(userHealth <= 0)
+                    {
+                    userAlive = false;
+                    YouDied();
+                    }
+                    else if (userHealth > 0)
+                    {
+                    ContinueBattle();
+                    }
+                }
+
+                if(monster1Alive === false)
+                {
+                    arrows += 10;
+                    goldCoins += 10;
+                    alert("Vermin is dead. You loot the vermin.Loot 10 GoldCoins and 10 arrows. So you travel further into the woods ");
+                    alert("Current Loot: " + goldCoins + "gold. and " + arrows + "arrows");
+                    currentHealth = 100;
+                    newBattle();
+
+                }
+            }
+        }
+
+        function newBattle()
+        {
+            if(userAlive == true)
+            {
+
+            
+            alert("you have " + arrows + " arrows and" + currentHealth + " life, and meet a Varmin. Vermin has " + currentHealth + " HP");
+            var usedArrows = prompt("how many arrows would you like to use on Vermin? use:" );
+            if(usedArrows < 0)
+            {
+                usedArrows = 0;
+            }
+            if(usedArrows > arrows)
+            {
+                bloodArrows = (usedArrows - arrows);
+                userHealth -= (bloodArrows * 10);
+                usedArrows = arrows;
+                
+            }
+            arrows -= usedArrows;
+            currentHealth -= (usedArrows + bloodArrows) * arrowDamage;
+            bloodArrows = 0;
+            BattleResult();
+            }
+        }
+
+        function ContinueBattle()
+        {
+            alert( "Vermin has " +  userHealth + " HP. You have" + " arrows  " + arrows);
+            usedArrows = prompt("how many arrows would you like to use on Vermin? use:" )
+            if(usedArrows < 0)
+        {
+            usedArrows = 0;
+        }
+        if(usedArrows > arrows)
+        {
+                bloodArrows = (usedArrows - arrows);
+                userHealth -= (bloodArrows * 10);
+                usedArrows = arrows ;
+                
+        }
+        arrows -= usedArrows;
+        currentHealth -= (usedArrows + bloodArrows) * arrowDamage;
+        bloodArrows = 0;
+            BattleResult();
+
+        }
+
+        function YouDied()
+        {
+                monster1Alive = true;
+                userAlive = true;
+                currentHealth = 100;
+                userHealth = 100;
+                arrows = 7;
+                bloodArrows = 0;
+            answer = prompt("You died! Would you like to try again? (yes or no)")
+            if(answer === "yes")
+            {
+                newBattle();
+            }
+            else
+            {
+                alert("Have a nice day");
+            }
+           
+            
+        }
+        
+        //console.log("piler", arrows); // piler og arrows er argumenter'
+
+        // Debugging
+        
+        //alert( arrows + " Starting arrows"); // Forkortelse for window.alert()
+        //console.log("Heisann");
+        // Adrian bruker 4 piler på vermin
+        //arrows -= 4;
+
+        //alert( arrows + " arrows after fighting vermin");
+        // Adrian finner 3 piler
+        //arrows += 3; // arrows = arrows + 3;
+
+        //alert( arrows + " arrows after looting vermin");
+
+
+
+        // Task 1: deklarer 2 variabler til
+        // Task 2: initier variablene (alle)
+
+        //mainBadGuy; // fy-fy måten å deklarere variabler på, pga. blant annet Scope ""public"
+
+    </script>
+
+</body>
+</html>
