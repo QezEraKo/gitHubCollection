@@ -258,54 +258,102 @@ let currentState = "GS";
 
 // ADD INN, SHOP, BS and Upgrade?
 
+
+// AREA state //
+let currentArea = "forest";
+// "field"
+// "cave"
+// "ice-cave"
+// "snowy-fields"
+// "Snow-Castle"
+
 let isHeroTurn = true; // change this depending on hero and enemy level
 
 // XXXXXXX letIABLES FOR ENEMY XXXXXXX //
 
 
+
+
 //change so all objects are instantiated directly into array, and copy from list to make current enemy(thereby not changing "base-enemy");
 let goblin = {
-    name: "Hob-Gob",
+    name: "Gob",
     maxHealth: 0,
     maxHealthBase: 5,
     currentHealth: 0,
     damage: 0,
     baseDamage: 2,
     maxLevel: 2,
-    currentLevel: 0,
-    maxPotions: 0,
-    potions: 0,
-    goldLoot: 5,
-    arrowLoot: 2,
-    experienceLoot: 10,
-    isDead : false,
-    givenLoot: false
-    
-}
-
-let goblin1 = {
-    name: "Goblin",
-    maxHealth: 0,
-    maxHealthBase: 10,
-    currentHealth: 0,
-    damage: 0,
-    baseDamage: 4,
-    maxLevel: 2,
-    currentLevel: 0,
+    currentLevel: 1,
     maxPotions: 0,
     potions: 0,
     goldLoot: 5,
     arrowLoot: 2,
     experienceLoot: 10,
     isDead: false,
-    givenLoot: false
+    givenLoot: false,
+    image: "/assets/encounter_goblin.jpg"  
+    
 }
 
-let enemyArray = [
+let goblin1 = {
+    name: "Hob-Gob",
+    maxHealth: 0,
+    maxHealthBase: 10,
+    currentHealth: 0,
+    damage: 0,
+    baseDamage: 4,
+    maxLevel: 3,
+    currentLevel: 1,
+    maxPotions: 0,
+    potions: 0,
+    goldLoot: 5,
+    arrowLoot: 2,
+    experienceLoot: 10,
+    isDead: false,
+    givenLoot: false,
+    image: "/assets/BleedingGoblin.jpg"
+}
+
+let goblin2 = {
+    name: "Tank-Gob",
+    maxHealth: 0,
+    maxHealthBase: 15,
+    currentHealth: 0,
+    damage: 0,
+    baseDamage: 3,
+    maxLevel: 4,
+    currentLevel: 1,
+    maxPotions: 0,
+    potions: 0,
+    goldLoot: 5,
+    arrowLoot: 2,
+    experienceLoot: 10,
+    isDead: false,
+    givenLoot: false,
+    image: "/assets/GoblinDamaged.jpg"
+}
+
+//All monsters in game
+let enemyArray = [  
     goblin,
-    goblin1
+    goblin1,
+    goblin2
+]
+//All monsters from area that player can face.
+let currentEnemyArray = [  //change availability depending hero Level
+    goblin
+] // monster that is currently beeing attacked
+
+let currentEnemy
+
+//All monsters in Area
+let areaMonsterArray = [ // change monsters depending on area
+    goblin,
+    goblin1,
+    goblin2
 ]
 
+//REMOVE?
 let testEnemyArray = [
     goblin = {
         name: "Hob-Gob",
@@ -527,12 +575,20 @@ function calculateEnemyStats() //Do at start of each battle and each "action"?
            //Preload a enemy? //Nah will make object and just copy them over
             break;
         case "SUBP":
-            enemyArray[0].currentLevel = 1; // Add gimmic
+            console.log("sise is:" + currentEnemyArray);
+            //currentEnemyArray[0].currentLevel = 1; //set all level to 1
             enemyMaxStats();
-            enemyArray[0].currentHealth = enemyArray[0].maxHealth;
-            enemyArray[0].potions = enemyArray[0].maxPotions;
-            enemyArray[0].isDead = false;
-            enemyArray[0].givenLoot = false; 
+            currentEnemy.currentHealth = currentEnemy.maxHealth;
+            currentEnemy.potions = currentEnemy.maxPotions;
+            currentEnemy.isDead = false;
+            currentEnemy.givenLoot = false;
+            //REMOVE BELOW IF ABOVE WORKS 
+            //enemyArray[2].currentLevel = 1; // Add gimmic
+            //enemyMaxStats();
+            //enemyArray[2].currentHealth = enemyArray[2].maxHealth;
+            //enemyArray[2].potions = enemyArray[2].maxPotions;
+            //enemyArray[2].isDead = false;
+            //enemyArray[2].givenLoot = false;
             break;
         case "BP":
              // Update stats
@@ -542,6 +598,8 @@ function calculateEnemyStats() //Do at start of each battle and each "action"?
             break;
     }
 }
+
+
 
 
 function retreatFromCombat()
@@ -575,6 +633,8 @@ function calculateHeroStats() //Do after each "action?" AND Battle
             armourCost = 20 + (10 * currentShieldLevel);
             goldPouchCost = heroMaxGold;
             heroIsDead = false;
+            resetMonsterLevel();
+            mainImage.src="/assets/green_forest_1.jpg";
             break;
 
         default: 
@@ -586,6 +646,14 @@ function calculateHeroStats() //Do after each "action?" AND Battle
         goldPouchCost = heroMaxGold;
         break;
     }
+}
+
+function resetMonsterLevel()
+{
+    enemyArray.forEach(function(enemy)
+    {
+        enemy.currentLevel = 1;
+    });
 }
 
 function countResources() //Do after each battle, and each "action?"
@@ -618,17 +686,17 @@ function countResources() //Do after each battle, and each "action?"
 
 function EnemyAI()
 {
-    if (enemyArray[0].currentHealth <= (enemyArray[0].maxHealth/2) && enemyArray[0].potions != 0)
+    if (currentEnemy.currentHealth <= (currentEnemy.maxHealth/2) && currentEnemy.potions > 0)
     {
         enemyTakeDamage(-5); //heal for 5
-        enemyArray[0].potions -= 1;
-        chatLogRef.innerHTML += `${enemyArray[0].name} used a potion and healed for : 5 HP`;
+        currentEnemy.potions -= 1;
+        chatLogRef.innerHTML += `${currentEnemy.name} used a potion and healed for : 5 HP`;
     }
     else 
     {
-        heroTakeDamage(enemyArray[0].damage);
-        chatLogRef.innerHTML += `${enemyArray[0].name} attacked you for ${enemyArray[0].damage}`;
-        console.log(`enemy damage: ${enemyArray[0].damage}`);
+        heroTakeDamage(currentEnemy.damage);
+        chatLogRef.innerHTML += `${currentEnemy.name} attacked you for ${currentEnemy.damage}`;
+        console.log(`enemy damage: ${currentEnemy.damage}`);
     }
     isHeroTurn = true;
 
@@ -652,16 +720,17 @@ function heroMaxStats() // Calculate new MAX stats after gaining new level
 
 function enemyMaxStats()
 {
-    enemyName = "hobGob"; // Remove
-    enemyMaxHealth = (5 + (5 * enemyCurrentLevel)); // Same as below. cann remove
-    console.log(enemyArray[0].maxHealth);
-    enemyArray[0].maxHealth = (5 + (5 * enemyArray[0].currentLevel)); // same as above
-    console.log(enemyArray[0].maxHealth);
-    enemyDamage = (2 * enemyCurrentLevel); // Same as below REMOVE 
-    enemyArray[0].damage = (enemyArray[0].baseDamage * enemyArray[0].currentLevel); // Same as above
-    console.log(`damage:${enemyArray[0].damage} basedamage${enemyArray[0].baseDamage} level${enemyArray[0].currentLevel}`);
-    enemyMaxPotions = (enemyCurrentLevel); // Same as Below REMOVE
-    enemyArray[0].maxPotions = (enemyArray[0].currentLevel); // Same as above
+    //enemyName = "hobGob"; // Remove
+    //enemyMaxHealth = (5 + (5 * enemyCurrentLevel)); // Same as below. cann remove
+    console.log("level:" + currentEnemy.currentLevel);
+    console.log("maxhealth before it's set" + currentEnemy.maxHealth);
+    currentEnemy.maxHealth = (currentEnemy.maxHealthBase * currentEnemy.currentLevel); // same as above
+    console.log("maxhealth after it's set" + currentEnemy.maxHealth);
+    //enemyDamage = (2 * enemyCurrentLevel); // Same as below REMOVE 
+    currentEnemy.damage = (currentEnemy.baseDamage * currentEnemy.currentLevel); // Same as above
+    console.log(`damage:${currentEnemy.damage} basedamage${currentEnemy.baseDamage} level${currentEnemy.currentLevel}`);
+    //enemyMaxPotions = (enemyCurrentLevel); // Same as Below REMOVE
+    currentEnemy.maxPotions = (currentEnemy.currentLevel); // Same as above
 
 }
 
@@ -670,7 +739,7 @@ function experienceGain(experience) //gain experience
 
     if( heroCurrentLevel < 20)
     {
-        let levelDifference = (heroCurrentLevel - enemyArray[0].currentLevel);
+        let levelDifference = (heroCurrentLevel - currentEnemy.currentLevel);
         if (levelDifference < 4)
         {
             console.log("level diff " + levelDifference);
@@ -688,10 +757,25 @@ function experienceGain(experience) //gain experience
                 heroCurrentLevel += 1;
                 heroMaxStats();
                 heroCurrentHealth = heroMaxHealth;
+                enemyLevelUp();
             }
         }
         heroMaxStats();
     }   
+}
+
+function enemyLevelUp()
+{
+    currentEnemyArray.forEach(function(enemy)  {
+        if(enemy.currentLevel < enemy.maxLevel)
+            {
+                enemy.currentLevel += 1;
+            }
+});
+    if(currentEnemyArray.length < areaMonsterArray.length)
+        {
+            currentEnemyArray.push(areaMonsterArray[currentEnemyArray.length])
+        }
 }
 
 function testGoldGain(loot)
@@ -836,12 +920,12 @@ function updateDisplayedHeroStats()
 }
 
 function updateDisplayedEnemyStats()
-{
-    document.getElementById("enemyNameDisplay").innerHTML = `Enemy Name: ${enemyArray[0].name}`;
-    document.getElementById("enemyHealthDisplay").innerHTML = `Enemy Health: ${enemyArray[0].currentHealth}/${enemyArray[0].maxHealth}`;
-    document.getElementById("enemyDamageDisplay").innerHTML = `Enemy Damage: ${enemyArray[0].damage}`;
-    document.getElementById("enemyLevelDisplay").innerHTML = `Enemy Level: ${enemyArray[0].currentLevel}`;
-    document.getElementById("enemyPotionDisplay").innerHTML = `Enemy Potions: ${enemyArray[0].potions}`;
+{  
+    document.getElementById("enemyNameDisplay").innerHTML = `Enemy Name: ${currentEnemy.name}`;
+    document.getElementById("enemyHealthDisplay").innerHTML = `Enemy Health: ${currentEnemy.currentHealth}/${currentEnemy.maxHealth}`;
+    document.getElementById("enemyDamageDisplay").innerHTML = `Enemy Damage: ${currentEnemy.damage}`;
+    document.getElementById("enemyLevelDisplay").innerHTML = `Enemy Level: ${currentEnemy.currentLevel}`;
+    document.getElementById("enemyPotionDisplay").innerHTML = `Enemy Potions: ${currentEnemy.potions}`;
 }
 
 function resetDisplayedEnemyStats()
@@ -906,27 +990,67 @@ function goTown()
 
 function createEnemy()
 {
+    rollCreature();
     calculateEnemyStats();
     updateDisplayedEnemyStats();
-    mainImage.src= "/assets/encounter_goblin.jpg";
-    chatLogRef.innerHTML = `You encountered ${enemyArray[0].name}`;
+    mainImage.src = currentEnemy.image;
+    chatLogRef.innerHTML = `You encountered ${currentEnemy.name}`;
     currentState = "BP";
     stateChanged();
 }
 
+function rollCreature()
+{
+    // X make condition for what area player is in.(per now it's just forest) // do this when changing area 
+    // X find all enemies from "forest" and put in "area monster list"   makes it expandable for area, but cna be heavy if full enemy list is long //do this when changin area
+    // X move enemies over to "potentialMonsterlist" if they match player level || simple way of keeping difficulty up to code  // do this when levling up
+    //roll number and copy monster over to current enemy array, and set up enemy || makes it easier to battle random enemies from any area
+
+    var randomNumbergenerated = Math.random() * currentEnemyArray.length-1; // random rumber
+    var randomNumber = Math.round(randomNumbergenerated);
+    console.log("random number: =" + randomNumber)
+    if(randomNumber < 0)
+        {
+            randomNumber = 0;
+            console.log("resetmonster roll to 0");
+        }
+    //currentEnemyArray.length = 0;   //reset array
+    currentEnemy = currentEnemyArray[randomNumber];
+    //currentEnemyArray.push(areaMonsterArray[randomNumber]); //get monster of rand number
+
+}
+
+/*function createEnemies(name, damage, hp, level, gold, arrow, ) // REPAIR || REMOVE
+{
+    let enemy =
+    {
+        enemyName: name,
+        baseDamage: damage,
+        baseHp: hp,
+        enemyLevel: level,
+        goldLoot: gold,
+        arrowLoot: arrow
+    };
+}*/
+
 function enemyTakeDamage(damage)
 {
-    enemyArray[0].currentHealth -= damage;
-    chatLogRef.innerHTML += `<p>${enemyArray[0].name} took ${heroDamage} damage</p>`
-    updateDisplayedEnemyStats()
+    currentEnemy.currentHealth -= damage;
+    chatLogRef.innerHTML += `<p>${currentEnemy.name} took ${heroDamage} damage</p>`
+    
 
-    if(enemyArray[0].currentHealth <= 0)
+    if(currentEnemy.currentHealth <= 0)
     {
-        enemyArray[0].currentHealth = 0;
-        enemyArray[0].isDead = true;
-        chatLogRef.innerHTML = `${enemyArray[0].name} died! </br>`;
+        currentEnemy.currentHealth = 0;
+        currentEnemy.isDead = true;
+        chatLogRef.innerHTML = `${currentEnemy.name} died! </br>`;
         mainImage.src="./assets/green_forest_1.jpg";
     }
+    if(currentEnemy.currentHealth > currentEnemy.maxHealth)
+        {
+            currentEnemy.currentHealth = currentEnemy.maxHealth;
+        }
+    updateDisplayedEnemyStats()
 }
 
 function heroRest()
@@ -960,7 +1084,7 @@ function heroTakeDamage(damage)
 }
 function battlePhase()
 {    
-    if (enemyArray[0].isDead == false)
+    if (currentEnemy.isDead == false)
     {
         if(isHeroTurn == false && heroIsDead == false)
         {
@@ -968,13 +1092,13 @@ function battlePhase()
             EnemyAI();
         }
     }
-    else if(enemyArray[0].isDead == true && enemyArray[0].givenLoot == false)
+    else if(currentEnemy.isDead == true && currentEnemy.givenLoot == false)
     {
-        enemyArray[0].givenLoot = true;
-        lootGain(enemyArray[0].arrowLoot, "arrowLootID") //tells lootgain that we ae gaining arrows;
-        lootGain(enemyArray[0].goldLoot, "goldLootID") // tells lootgain that we gain gold
-        experienceGain(enemyArray[0].experienceLoot);  //could use this in "lootGain" but meh
-        chatLogRef.innerHTML += `you gained loot!  ${enemyArray[0].goldLoot} gold, ${enemyArray[0].arrowLoot} arrows and ${enemyArray[0].experienceLoot} experience!`
+        currentEnemy.givenLoot = true;
+        lootGain(currentEnemy.arrowLoot, "arrowLootID") //tells lootgain that we ae gaining arrows;
+        lootGain(currentEnemy.goldLoot, "goldLootID") // tells lootgain that we gain gold
+        experienceGain(currentEnemy.experienceLoot);  //could use this in "lootGain" but meh
+        chatLogRef.innerHTML += `you gained loot!  ${currentEnemy.goldLoot} gold, ${currentEnemy.arrowLoot} arrows and ${currentEnemy.experienceLoot} experience!`
         updateDisplayedHeroStats();
         resetDisplayedEnemyStats();
         currentState = "AP";
@@ -982,18 +1106,7 @@ function battlePhase()
     }
 }
 
-/*function createEnemies(name, damage, hp, level, gold, arrow, ) // REPAIR || REMOVE
-{
-    let enemy = 
-    {
-        enemyName: name,
-        baseDamage: damage,
-        baseHp: hp,
-        enemyLevel: level,
-        goldLoot: gold,
-        arrowLoot: arrow
-    };
-}*/
+
 
 function stateChanged()
 {
